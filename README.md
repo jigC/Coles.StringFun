@@ -9,6 +9,21 @@ Application is a simple program that can perform 3 functions:
 
 Provides a command line interface
 
+# To run (using VS) 
+
+Restore the Nuget packages
+Rebuild the solution
+
+Set the start up project as `Coles.StringFun.Host` and press F5 or you could use swagger setting `Coles.StringFun.API` as start up project
+
+# for cmd prompt: 
+
+Navigate to the solution folder in command prompt, execute following commands:
+
+1. dotnet restore 
+2. dotnet build
+3. dotnet Coles.StringFun.Host\bin\Debug\net6.0\Coles.StringFun.Host.dll
+
 
 # About application - technical
 
