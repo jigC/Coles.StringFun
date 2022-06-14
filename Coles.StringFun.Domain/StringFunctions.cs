@@ -3,6 +3,9 @@
 
 	public static class StringFunctions
 	{
+		/*
+		 * The function tests 2 strings for anagrams - returns true if they are
+		*/
 		public static bool AreAnagrams(this string word1, string word2)
 		{
 			if (word1 == null && word2 == null) return true;

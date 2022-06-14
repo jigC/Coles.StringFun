@@ -2,6 +2,9 @@
 {
 	public static class StringExtensions
 	{
+		/*
+		 * Function to reverse string passed to it
+		*/
 		public static string Reverse(this string sentence)
 		{
 			if (string.IsNullOrEmpty(sentence)) return string.Empty;
