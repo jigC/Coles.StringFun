@@ -1,4 +1,4 @@
-using Coles.StringFun.Domain;
+using Coles.StringFun.Domain.Extensions;
 
 namespace Coles.StringFun.Tests
 {

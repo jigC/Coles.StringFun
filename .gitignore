@@ -12,13 +12,6 @@
 *.editorconfig
 *.exe
 *.CopyComplete
-Coles.StringFun.Domain/obj/
-Coles.StringFun.Domain/bin/
-Coles.StringFun.Tests/bin/
-Coles.StringFun.Tests/obj/
-Coles.StringFun.Host/bin/
-Coles.StringFun.Host/obj/
-.vs/Coles.StringFun/DesignTimeBuild/.dtbcache.v2
-.vs/ProjectEvaluation/coles.stringfun.metadata.v2
-.vs/ProjectEvaluation/coles.stringfun.projects.v2
-Coles.StringFun.Host/obj/Debug/net6.0/_IsIncrementalBuild
+*/obj/
+*/bin/
+*.v2

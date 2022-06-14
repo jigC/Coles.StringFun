@@ -1,4 +1,4 @@
-﻿namespace Coles.StringFun.Domain
+﻿namespace Coles.StringFun.Domain.Extensions
 {
 	public static class StringExtensions
 	{
@@ -11,8 +11,8 @@
 
 			var arr = sentence.ToCharArray();
 			Array.Reverse(arr);
-			
+
 			return new string(arr);
-		}	
+		}
 	}
 }

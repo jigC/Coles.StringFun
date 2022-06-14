@@ -6,8 +6,4 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Coles.StringFun.Definitions\Coles.StringFun.Definitions.csproj" />
-  </ItemGroup>
-
 </Project>

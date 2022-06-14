@@ -1,70 +1,81 @@
 ﻿
-
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Coles.StringFun.Host;
 using Coles.StringFun.Domain;
+using Coles.StringFun.Application;
+using Coles.StringFun.Definitions;
 
-Console.WriteLine("\nWelcome to Coles Fun With Strings");
+using IHost host = Host.CreateDefaultBuilder(args)
+	.ConfigureServices((_, services) =>
+		services.AddSingleton<IArrayFunctions<string>, ArrayFunctions<string>>()
+				.AddSingleton<IStringFunctions, StringFunctions>()
+				.AddSingleton<IStringRequestHandler, StringRequestHandler>()
+				.AddSingleton<IArrayRequestHandler<string>, ArrayRequestHandler<string>>()
+				.AddTransient<LogWriter>())
+				.Build();
 
-var options = new List<string>() { "1", "2", "3", "4", "X" };
-var userChoiceValid = true;
-var userChoice = "";
-Console.WriteLine("\n\n\nChoose your option from:");
-do
+Run(host.Services);
+await host.RunAsync();
+
+
+static void Run(IServiceProvider services)
 {
-    if (!userChoiceValid)
-        Console.WriteLine("\n\nInvalid choice, please choose your option from following or press 'X' to Quit:");
+	using IServiceScope serviceScope = services.CreateScope();
+	IServiceProvider provider = serviceScope.ServiceProvider;
 
-    Console.WriteLine("\n\t 1. Reverse the letters of words within the sentence");
-    Console.WriteLine("\n\t 2. Detect if two sets of characters are anagrams");
-    Console.WriteLine("\n\t 3. Remove the repeated elements of an array");
-    Console.WriteLine("\n Press X to QUIT");
+	LogWriter logger = provider.GetRequiredService<LogWriter>();
+	IArrayRequestHandler<string> arrayRequestHandler = provider.GetRequiredService<IArrayRequestHandler<string>>();
+	IStringRequestHandler stringRequestHandler = provider.GetRequiredService<IStringRequestHandler>();
 
-    userChoice = Console.ReadLine();
-    userChoiceValid = Helper.HasSelectedRightOption(options, userChoice ?? "");
-    Console.Clear();
 
-} while (!userChoiceValid);
 
-switch (userChoice?.ToLower())
-{
-    case "1":
-        Console.WriteLine($"\nEnter sentence to reverse:");
-        var sentence = Console.ReadLine();
-        if (sentence?.Length < 1)
-        {
-            Console.WriteLine("\nInvalid sentence");
-            break;
-        }
-        Console.WriteLine($"\n Reveresed {sentence?.Reverse()}");
-        break;
+	logger.Write("\n--------Welcome to Coles Fun With Strings---------");
+	logger.Write("\n\n\nChoose your option from:");
 
-    case "2":
-        Console.WriteLine($"\nEnter first word to test for anagrams:");
-        var word1 = Console.ReadLine();
-        Console.WriteLine($"\nEnter second word to test for anagrams:");
-        var word2 = Console.ReadLine();
-        var areAnagrams = StringFunctions.AreAnagrams(word1, word2) == true ? "" : " not ";
-        Console.WriteLine($"\n The words {word1} and {word2} are{areAnagrams} anagrams");
-        break;
+	var userChoice = Helper.GetUserChoice(logger, Helper.GetUserOptions());
 
-    case "3":
-        Console.WriteLine($"\nEnter words to remove repeated elements (seperated by commas):");
-        var words = Console.ReadLine();
+	switch (userChoice?.ToLower())
+	{
+		case "1":
+			logger.Write($"\nEnter sentence to reverse:");
+			var sentence = Console.ReadLine();
+			if (sentence?.Length < 1)
+			{
+				logger.Write("\nInvalid sentence");
+				break;
+			}
+			logger.Write($"\n Reveresed {stringRequestHandler.GetReverse(sentence)}");
+			break;
 
-        if (words?.Length < 1)
-        {
-            Console.WriteLine("\nInvalid list");
-            break;
-        }
+		case "2":
+			logger.Write($"\nEnter first word to test for anagrams:");
+			var word1 = Console.ReadLine();
+			logger.Write($"\nEnter second word to test for anagrams:");
+			var word2 = Console.ReadLine();
+			var areAnagrams = stringRequestHandler.CheckIfAreAnagrams(new string[] { word1, word2 }) == true ? "" : " not ";
+			logger.Write($"\n The words {word1} and {word2} are{areAnagrams} anagrams");
+			break;
 
-        var arrayExtensions = new ArrayFunctions<string>();
-        var wordArray = words?.Split(',');
-        var distinctList = arrayExtensions.Distinct(wordArray);
-        Console.WriteLine($"\nDistinct string list: {string.Join(",", distinctList)}");
-        break;
+		case "3":
+			logger.Write($"\nEnter words to remove repeated elements (seperated by commas):");
+			var words = Console.ReadLine();
 
-    default:
-        break;
+			if (words?.Length < 1)
+			{
+				logger.Write("\nInvalid list");
+				break;
+			}
+
+			var wordArray = words?.Split(',');
+			var distinctList = arrayRequestHandler.GetDistinct(wordArray);
+			logger.Write($"\nDistinct string list: {string.Join(",", distinctList)}");
+			break;
+
+		default:
+			break;
+	}
+
+	logger.Write("\n\n\n\t THANK YOU FOR PLAYING");
+	return;
 }
-
-Console.WriteLine("\n\n\n\t THANK YOU FOR PLAYING");

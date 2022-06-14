@@ -1,12 +1,15 @@
-﻿namespace Coles.StringFun.Domain
+﻿using Coles.StringFun.Definitions;
+using Coles.StringFun.Domain.Extensions;
+
+namespace Coles.StringFun.Domain
 {
 
-	public static class StringFunctions
+	public class StringFunctions : IStringFunctions
 	{
 		/*
 		 * The function tests 2 strings for anagrams - returns true if they are
 		*/
-		public static bool AreAnagrams(this string word1, string word2)
+		public bool AreAnagrams(string word1, string word2)
 		{
 			if (word1 == null && word2 == null) return true;
 
@@ -22,6 +25,11 @@
 			var sortedString2 = new string(word2Characters);
 
 			return sortedString1.Equals(sortedString2, StringComparison.CurrentCultureIgnoreCase);
+		}
+
+		public string Reverse(string sentence)
+		{
+			return sentence.Reverse();
 		}
 	}
 }

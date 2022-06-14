@@ -1,14 +1,17 @@
+using Coles.StringFun.Application;
 using Coles.StringFun.Domain;
+using Xunit;
 
 namespace Coles.StringFun.Tests
 {
-	public class StringFunctionsTests
+	public class StringRequestHandlerTests
 	{
-		private StringFunctions _functions;
+		private readonly IStringRequestHandler _handler;
 
-		public StringFunctionsTests()
+		public StringRequestHandlerTests()
 		{
-			_functions = new StringFunctions();
+			var _functions = new StringFunctions();
+			_handler = new StringRequestHandler(_functions);
 		}
 
 		[Theory]
@@ -19,7 +22,7 @@ namespace Coles.StringFun.Tests
 		[InlineData("listen Marc", "silent Cram", true)]
 		public void Test_Identifies_Anagram(string word1, string word2, bool areAnagrams)
 		{
-			var anagramsFound = _functions.AreAnagrams(word1, word2);
+			var anagramsFound = _handler.CheckIfAreAnagrams(new string[] { word1, word2 });
 			Assert.True(anagramsFound.Equals(areAnagrams));
 		}
 	}
